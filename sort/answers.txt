@@ -2,7 +2,7 @@ sort1 uses: Bubble Sort
 
 How do you know?: Performs well on already sorted lists, slower on reversed and random lists.
 
-sort2 uses: Insertion Sort
+sort2 uses: Bubble Sort
 
 How do you know?: Performs well on already sorted lists, slower on reversed and random lists.
 
