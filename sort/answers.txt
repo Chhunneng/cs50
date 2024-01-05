@@ -4,8 +4,8 @@ How do you know?: The poor performance on larger datasets, especially reversed o
 
 sort2 uses: Bubble Sort
 
-How do you know?: The characteristics, such as quick performance on nearly sorted or reversed lists and a slower performance on larger randomly shuffled lists
+How do you know?: The characteristics, such as quick performance on nearly sorted or reversed lists and a slower performance on larger randomly shuffled lists.
 
 sort3 uses: Merge Sort
 
-How do you know?: TODO
+How do you know?: The characteristics, such as consistent performance regardless of the input order and a significant increase in execution time for larger input sizes.
