@@ -20,7 +20,7 @@ int main(int argc, string argv[])
     string key = argv[1];
     if (!is_valid_key(key))
     {
-        printf("Key must contain 26 unique alphabetic characters.\n");
+        printf("Key must contain 26 characters.\n");
         return 1;
     }
 
@@ -78,7 +78,6 @@ void encrypt(string plaintext, string key)
         }
         else
         {
-            // Print non-alphabetic characters unchanged
             printf("%c", plaintext[i]);
         }
     }
