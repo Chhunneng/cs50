@@ -1,8 +1,8 @@
 #include <cs50.h>
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 int count_letters(string text);
 int count_words(string text);
@@ -10,20 +10,16 @@ int count_sentences(string text);
 
 int main(void)
 {
-    // Get text input from the user
     string text = get_string("Text: ");
 
-    // Count letters, words, and sentences
     int letters = count_letters(text);
     int words = count_words(text);
     int sentences = count_sentences(text);
 
-    // Calculate the Coleman-Liau index
     float L = (float) letters / words * 100;
     float S = (float) sentences / words * 100;
     int index = round(0.0588 * L - 0.296 * S - 15.8);
 
-    // Print the corresponding grade level
     if (index < 1)
     {
         printf("Before Grade 1\n");
@@ -40,7 +36,6 @@ int main(void)
     return 0;
 }
 
-// Function to count the number of letters in a text
 int count_letters(string text)
 {
     int count = 0;
@@ -54,7 +49,6 @@ int count_letters(string text)
     return count;
 }
 
-// Function to count the number of words in a text
 int count_words(string text)
 {
     int count = 1;
@@ -68,7 +62,6 @@ int count_words(string text)
     return count;
 }
 
-// Function to count the number of sentences in a text
 int count_sentences(string text)
 {
     int count = 0;
@@ -76,7 +69,6 @@ int count_sentences(string text)
     {
         if (text[i] == '.' || text[i] == '!' || text[i] == '?')
         {
-            // Check for consecutive punctuation
             while (i + 1 < n && (text[i + 1] == '.' || text[i + 1] == '!' || text[i + 1] == '?'))
             {
                 i++;
