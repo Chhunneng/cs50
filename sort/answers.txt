@@ -1,11 +1,14 @@
 sort1 uses: Bubble Sort
 
-How do you know?: Performs well on already sorted lists, slower on reversed and random lists.
+How do you know?:
+- The time for reversed and random inputs is high, suggesting a quadratic time complexity, characteristic of Bubble Sort.
 
-sort2 uses: Bubble Sort
+sort2 uses: Merge Sort
 
-How do you know?: Performs well on already sorted lists, slower on reversed and random lists.
+How do you know?:
+- The time for random inputs is higher, suggesting a linearithmic or linear time complexity, characteristic of Merge Sort.
 
-sort3 uses: Merge Sort
+sort3 uses: Bubble Sort
 
-How do you know?: Consistently performs well on all types of lists.
+How do you know?:
+- The time for reversed, sorted, and random inputs is high, suggesting a quadratic time complexity, characteristic of Bubble Sort.
