@@ -176,7 +176,55 @@ void lock_pairs(void)
 // Check if adding the pair (winner, loser) would create a cycle
 bool creates_cycle(int winner, int loser)
 {
-    // Implement this function
+    bool visited[candidate_count];
+    for (int i = 0; i < candidate_count; i++)
+    {
+        visited[i] = false;
+    }
+
+    return has_cycle(winner, loser, visited);
+}
+
+// Recursive function to check for a cycle
+bool has_cycle(int current, int original_loser, bool visited[])
+{
+    // Base case 1: No preferences for the current candidate
+    if (preferences[current][0] == original_loser)
+    {
+        return false;
+    }
+
+    // Base case 2: Cycle detected (current candidate already visited)
+    if (visited[current])
+    {
+        return true;
+    }
+
+    // Mark the current candidate as visited
+    visited[current] = true;
+
+    // Check preferences recursively
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (preferences[current][i] == original_loser)
+        {
+            // We've looped back to the original loser, indicating a cycle
+            return true;
+        }
+        else if (!visited[preferences[current][i]])
+        {
+            // Recursively check preferences of the preferred candidate
+            if (has_cycle(preferences[current][i], original_loser, visited))
+            {
+                return true;
+            }
+        }
+    }
+
+    // Reset the visited status for the current candidate (backtrack)
+    visited[current] = false;
+
+    // No cycle detected
     return false;
 }
 
