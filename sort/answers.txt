@@ -1,14 +1,17 @@
-sort1 uses: Bubble Sort
+sort1 uses: Selection Sort
 
 How do you know?:
-- The time for reversed and random inputs is high, suggesting a quadratic time complexity, characteristic of Bubble Sort.
+- The runtime increases significantly as the input size grows, especially for reversed and sorted inputs. Selection sort has a time complexity of O(n^2), and its performance matches the observed runtimes.
+- Selection sort is not efficient on large datasets, and the increasing runtime for larger inputs is indicative of this algorithm.
 
-sort2 uses: Merge Sort
-
-How do you know?:
-- The time for random inputs is higher, suggesting a linearithmic or linear time complexity, characteristic of Merge Sort.
-
-sort3 uses: Bubble Sort
+sort2 uses: Bubble Sort
 
 How do you know?:
-- The time for reversed, sorted, and random inputs is high, suggesting a quadratic time complexity, characteristic of Bubble Sort.
+- The runtime also shows a significant increase for larger inputs, especially reversed and sorted inputs. Bubble sort has a time complexity of O(n^2), and the observed runtimes match this behavior.
+- Bubble sort repeatedly compares and swaps adjacent elements, and this behavior is reflected in the runtime results.
+
+sort3 uses: Merge Sort
+
+How do you know?:
+- The runtime is relatively consistent across different input sizes, and it does not exhibit the same sharp increase as selection sort and bubble sort for larger inputs. Merge sort has a time complexity of O(n log n), which is more efficient than O(n^2) algorithms.
+- Merge sort divides the array into smaller parts and recursively sorts them, which aligns with the observed runtime behavior.
