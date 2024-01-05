@@ -73,7 +73,7 @@ void encrypt(string plaintext, string key)
         if (isalpha(plaintext[i]))
         {
             char original_case = isupper(plaintext[i]) ? 'A' : 'a';
-            int index = tolower(plaintext[i]) - original_case;
+            int index = plaintext[i] - original_case;
             printf("%c", isupper(plaintext[i]) ? toupper(key[index]) : tolower(key[index]));
         }
         else
