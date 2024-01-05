@@ -1,0 +1,8 @@
+1. Prompt the user for the height
+2. Validate the user input:
+   - If the height is less than 1 or greater than 8 (or not an integer), go back to step 1
+3. Iterate from 1 through height:
+   a. Print spaces (height - i - 1 times) to center-align the pyramid
+   b. Print hashes (i times) for the left half of the pyramid
+   c. Move to the next line for the next row
+4. End
