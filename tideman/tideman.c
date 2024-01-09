@@ -32,6 +32,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+bool cycle(int end, int cycle_start);
 
 int main(int argc, string argv[])
 {
@@ -125,21 +126,21 @@ void record_preferences(int ranks[])
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    for(int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
-        for(int j = i + 1; j < candidate_count; j++)
+        for (int j = i + 1; j < candidate_count; j++)
         {
-            if(preferences[i][j] > preferences[j][i])
+            if (preferences[i][j] > preferences[j][i])
             {
                 pairs[pair_count].winner = i;
                 pairs[pair_count].loser = j;
-                pair_count ++;
+                pair_count++;
             }
-            else if(preferences[i][j] < preferences[j][i])
+            else if (preferences[i][j] < preferences[j][i])
             {
                 pairs[pair_count].winner = j;
                 pairs[pair_count].loser = i;
-                pair_count ++;
+                pair_count++;
             }
         }
     }
@@ -151,17 +152,15 @@ void sort_pairs(void)
 {
     // compare the amount of people that prefer the winner to the loser
     // sort by the biggest numbers first
-    for(int i = pair_count - 1; i >= 0; i--)
+    for (int i = pair_count - 1; i >= 0; i--)
     {
-        for(int j = 0; j <= i; j++)
+        for (int j = 0; j <= i; j++)
         {
-            if((preferences[pairs[j].winner][pairs[j].loser])
-               <
-               (preferences[pairs[j + 1].winner][pairs[j+1].loser]))
+            if ((preferences[pairs[j].winner][pairs[j].loser]) < (preferences[pairs[j + 1].winner][pairs[j + 1].loser]))
             {
                 pair temp = pairs[j];
-                pairs[j] = pairs[j+1];
-                pairs[j+1] = temp;
+                pairs[j] = pairs[j + 1];
+                pairs[j + 1] = temp;
             }
         }
     }
@@ -171,69 +170,36 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in decreasing order of victory strength
 void lock_pairs(void)
 {
+    // Loop through pairs
     for (int i = 0; i < pair_count; i++)
     {
-        // Check if adding this pair creates a cycle
-        if (!creates_cycle(pairs[i].winner, pairs[i].loser))
+        // If cycle returns false, lock the pair
+        if (!cycle(pairs[i].loser, pairs[i].winner))
         {
-            // Lock the pair
-            preferences[pairs[i].winner][pairs[i].loser] = true;
+            locked[pairs[i].winner][pairs[i].loser] = true;
         }
     }
+    return;
 }
 
-// Check if adding the pair (winner, loser) would create a cycle
-bool creates_cycle(int winner, int loser)
+bool cycle(int end, int cycle_start)
 {
-    bool visited[candidate_count];
-    for (int i = 0; i < candidate_count; i++)
-    {
-        visited[i] = false;
-    }
-
-    return has_cycle(winner, loser, visited);
-}
-
-// Recursive function to check for a cycle
-bool has_cycle(int current, int original_loser, bool visited[])
-{
-    // Base case 1: No preferences for the current candidate
-    if (preferences[current][0] == original_loser)
-    {
-        return false;
-    }
-
-    // Base case 2: Cycle detected (current candidate already visited)
-    if (visited[current])
+    // Return True if there is a cycle created (recursion base case)
+    if (end == cycle_start)
     {
         return true;
     }
-
-    // Mark the current candidate as visited
-    visited[current] = true;
-
-    // Check preferences recursively
+    // Loop through candidates
     for (int i = 0; i < candidate_count; i++)
     {
-        if (preferences[current][i] == original_loser)
+        if (locked[end][i])
         {
-            // We've looped back to the original loser, indicating a cycle
-            return true;
-        }
-        else if (!visited[preferences[current][i]])
-        {
-            // Recursively check preferences of the preferred candidate
-            if (has_cycle(preferences[current][i], original_loser, visited))
+            if (cycle(i, cycle_start))
             {
                 return true;
             }
         }
     }
-
-    // Reset the visited status for the current candidate (backtrack)
-    visited[current] = false;
-
-    // No cycle detected
     return false;
 }
 
@@ -242,19 +208,18 @@ void print_winner(void)
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        bool is_source = true;
+        int falseValues = 0;
         for (int j = 0; j < candidate_count; j++)
         {
-            if (preferences[j][i])
+            if (locked[j][i] == false)
             {
-                is_source = false;
-                break;
+                falseValues++;
+                if (falseValues == candidate_count)
+                {
+                    printf("%s\n", candidates[i]);
+                }
             }
         }
-        if (is_source)
-        {
-            printf("%s\n", candidates[i]);
-            return;
-        }
     }
+    return;
 }
