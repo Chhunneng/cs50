@@ -125,38 +125,47 @@ void record_preferences(int ranks[])
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    for (int i = 0; i < candidate_count; i++)
+    for(int i = 0; i < candidate_count; i++)
     {
-        for (int j = 0; j < candidate_count; j++)
+        for(int j = i + 1; j < candidate_count; j++)
         {
-            if (preferences[i][j] > preferences[j][i])
+            if(preferences[i][j] > preferences[j][i])
             {
                 pairs[pair_count].winner = i;
                 pairs[pair_count].loser = j;
-                pair_count++;
+                pair_count ++;
+            }
+            else if(preferences[i][j] < preferences[j][i])
+            {
+                pairs[pair_count].winner = j;
+                pairs[pair_count].loser = i;
+                pair_count ++;
             }
         }
     }
+    return;
 }
 
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    for (int i = 0; i < pair_count - 1; i++)
+    // compare the amount of people that prefer the winner to the loser
+    // sort by the biggest numbers first
+    for(int i = pair_count - 1; i >= 0; i--)
     {
-        for (int j = 0; j < pair_count - i - 1; j++)
+        for(int j = 0; j <= i; j++)
         {
-            int strength_j = preferences[pairs[j].winner][pairs[j].loser] - preferences[pairs[j].loser][pairs[j].winner];
-            int strength_j1 = preferences[pairs[j + 1].winner][pairs[j + 1].loser] - preferences[pairs[j + 1].loser][pairs[j + 1].winner];
-
-            if (strength_j < strength_j1)
+            if((preferences[pairs[j].winner][pairs[j].loser])
+               <
+               (preferences[pairs[j + 1].winner][pairs[j+1].loser]))
             {
                 pair temp = pairs[j];
-                pairs[j] = pairs[j + 1];
-                pairs[j + 1] = temp;
+                pairs[j] = pairs[j+1];
+                pairs[j+1] = temp;
             }
         }
     }
+    return;
 }
 
 // Lock pairs into the candidate graph in decreasing order of victory strength
