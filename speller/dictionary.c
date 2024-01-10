@@ -22,6 +22,21 @@ node *table[N];
 bool check(const char *word)
 {
     // TODO
+    int index = hash(word);
+
+    // Search the hash table at the location specified by the word’s hash value
+    node *cursor = table[index];
+    while (cursor != NULL)
+    {
+        // Compare case-insensitively using strcasecmp
+        if (strcasecmp(cursor->word, word) == 0)
+        {
+            return true;
+        }
+        cursor = cursor->next;
+    }
+
+    // Return false if no word is found
     return false;
 }
 
@@ -97,5 +112,15 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    return false;
+    for (int i = 0; i < N; i++)
+    {
+        node *cursor = table[i];
+        while (cursor != NULL)
+        {
+            node *temp = cursor;
+            cursor = cursor->next;
+            free(temp);
+        }
+    }
+    return true;
 }
