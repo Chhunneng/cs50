@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     // Check command-line arguments
     if (argc != 2)
     {
-        fprintf(stderr, "Usage: %s image\n", argv[0]);
+        fprintf(stderr, "Usage: ./recover FILE\n");
         return 1;
     }
 
