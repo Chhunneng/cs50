@@ -1,28 +1,26 @@
 import csv
 import sys
 
+
 def main():
     if len(sys.argv) != 3:
         print("Usage: python dna.py database.csv sequence.txt")
         sys.exit(1)
 
     database_filename = sys.argv[1]
-    with open(database_filename, newline='') as database_file:
+    with open(database_filename, newline="") as database_file:
         reader = csv.DictReader(database_file)
         strs = reader.fieldnames[1:]
-        print(strs)
         individuals = list(reader)
-        print(individuals)
     sequence_filename = sys.argv[2]
     with open(sequence_filename) as sequence_file:
         dna_sequence = sequence_file.read()
 
     str_counts = {str_name: longest_match(dna_sequence, str_name) for str_name in strs}
-    print(str_counts)
 
     for individual in individuals:
         if all(str_counts[str_name] == int(individual[str_name]) for str_name in strs):
-            print(individual['name'])
+            print(individual["name"])
             sys.exit(0)
 
     print("No match")
@@ -38,7 +36,6 @@ def longest_match(sequence, subsequence):
 
     # Check each character in sequence for most consecutive runs of subsequence
     for i in range(sequence_length):
-
         # Initialize count of consecutive runs
         count = 0
 
@@ -46,7 +43,6 @@ def longest_match(sequence, subsequence):
         # If a match, move substring to next potential match in sequence
         # Continue moving substring and checking for matches until out of consecutive matches
         while True:
-
             # Adjust substring start and end
             start = i + count * subsequence_length
             end = start + subsequence_length
