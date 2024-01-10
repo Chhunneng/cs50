@@ -12,6 +12,7 @@ def main():
         strs = reader.fieldnames[1:]
         print(strs)
         individuals = list(reader)
+        print(individuals)
     sequence_filename = sys.argv[2]
     with open(sequence_filename) as sequence_file:
         dna_sequence = sequence_file.read()
