@@ -18,6 +18,7 @@ def main():
         dna_sequence = sequence_file.read()
 
     str_counts = {str_name: longest_match(dna_sequence, str_name) for str_name in strs}
+    print(str_counts)
 
     for individual in individuals:
         if all(str_counts[str_name] == int(individual[str_name]) for str_name in strs):
