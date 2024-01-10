@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,7 +22,7 @@ int main(int argc, char *argv[])
     }
 
     // Buffer to store 512 bytes
-    BYTE buffer[512];
+    uint8_t buffer[512];
 
     // Counter for JPEG filenames
     int jpeg_count = 0;
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
     FILE *jpeg = NULL;
 
     // Read the forensic image block by block
-    while (fread(buffer, sizeof(BYTE), 512, file) == 512)
+    while (fread(buffer, sizeof(uint8_t), 512, file) == 512)
     {
         // Check for the start of a new JPEG
         if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
@@ -59,7 +60,7 @@ int main(int argc, char *argv[])
         // Write the block to the current JPEG
         if (jpeg != NULL)
         {
-            fwrite(buffer, sizeof(BYTE), 512, jpeg);
+            fwrite(buffer, sizeof(uint8_t), 512, jpeg);
         }
     }
 
