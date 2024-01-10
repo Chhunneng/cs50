@@ -53,5 +53,46 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+    RGBTRIPLE temp[height][width];
+
+    // Iterate over all pixels
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            int sumRed = 0, sumGreen = 0, sumBlue = 0;
+            int count = 0;
+
+            // Iterate over the 3x3 neighborhood around the current pixel
+            for (int ni = i - 1; ni <= i + 1; ni++)
+            {
+                for (int nj = j - 1; nj <= j + 1; nj++)
+                {
+                    // Check if the neighboring pixel is within bounds
+                    if (ni >= 0 && ni < height && nj >= 0 && nj < width)
+                    {
+                        sumRed += image[ni][nj].rgbtRed;
+                        sumGreen += image[ni][nj].rgbtGreen;
+                        sumBlue += image[ni][nj].rgbtBlue;
+                        count++;
+                    }
+                }
+            }
+
+            // Calculate the average color values and update the temporary copy
+            temp[i][j].rgbtRed = round((float)sumRed / count);
+            temp[i][j].rgbtGreen = round((float)sumGreen / count);
+            temp[i][j].rgbtBlue = round((float)sumBlue / count);
+        }
+    }
+
+    // Copy the blurred image back to the original image
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j] = temp[i][j];
+        }
+    }
     return;
 }
