@@ -29,7 +29,7 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // TODO: Improve this hash function
-    return toupper(word[0]) - 'A';
+    return tolower(word[0]) - 'a';
 }
 
 // Loads dictionary into memory, returning true if successful, else false
@@ -80,7 +80,17 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // TODO
-    return 0;
+    unsigned int count = 0;
+    for (int i = 0; i < N; i++)
+    {
+        node *cursor = table[i];
+        while (cursor != NULL)
+        {
+            count++;
+            cursor = cursor->next;
+        }
+    }
+    return count;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
