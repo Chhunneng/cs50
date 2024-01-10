@@ -5,18 +5,22 @@ typedef unsigned char BYTE;
 
 int main(int argc, char *argv[])
 {
+    // Check command-line arguments
     if (argc != 2)
     {
         fprintf(stderr, "Usage: %s image\n", argv[0]);
         return 1;
     }
 
+    // Open forensic image for reading
     FILE *file = fopen(argv[1], "r");
     if (file == NULL)
     {
         fprintf(stderr, "Could not open %s for reading.\n", argv[1]);
         return 1;
     }
+
+    // Buffer to store 512 bytes
     BYTE buffer[512];
 
     // Counter for JPEG filenames
