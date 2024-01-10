@@ -1,27 +1,35 @@
 import csv
 import sys
-import csv
-
-rows = []
-with open("foo.csv") as file:
-    reader = csv.DictReader(file)
-    for row in reader:
-        rows.append(row)
-
 
 def main():
+    # Check for correct number of command-line arguments
+    if len(sys.argv) != 3:
+        print("Usage: python dna.py database.csv sequence.txt")
+        sys.exit(1)
 
-    # TODO: Check for command-line usage
+    # Read STR counts from CSV file into memory
+    database_filename = sys.argv[1]
+    with open(database_filename, newline='') as database_file:
+        reader = csv.DictReader(database_file)
+        strs = reader.fieldnames[1:]
+        individuals = list(reader)
 
-    # TODO: Read database file into a variable
+    # Read DNA sequence from text file into memory
+    sequence_filename = sys.argv[2]
+    with open(sequence_filename) as sequence_file:
+        dna_sequence = sequence_file.read()
 
-    # TODO: Read DNA sequence file into a variable
+    # Compute the longest run of consecutive repeats for each STR in the DNA sequence
+    str_counts = {str_name: longest_match(dna_sequence, str_name) for str_name in strs}
 
-    # TODO: Find longest match of each STR in DNA sequence
+    # Check for a match in the database
+    for individual in individuals:
+        if all(str_counts[str_name] == int(individual[str_name]) for str_name in strs):
+            print(individual['name'])
+            sys.exit(0)
 
-    # TODO: Check database for matching profiles
-
-    return
+    # If no match is found
+    print("No match")
 
 
 def longest_match(sequence, subsequence):
