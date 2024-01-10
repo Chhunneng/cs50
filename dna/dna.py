@@ -9,6 +9,7 @@ def main():
     database_filename = sys.argv[1]
     with open(database_filename, newline='') as database_file:
         reader = csv.DictReader(database_file)
+        print(reader)
         strs = reader.fieldnames[1:]
         individuals = list(reader)
     sequence_filename = sys.argv[2]
