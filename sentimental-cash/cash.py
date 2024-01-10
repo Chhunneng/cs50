@@ -1,5 +1,6 @@
 from cs50 import get_float
 
+
 def main():
     while True:
         dollars = get_float("Change owed: ")
@@ -14,6 +15,7 @@ def main():
 
     coins = quarters + dimes + nickels + pennies
     print(coins)
+
 
 if __name__ == "__main__":
     main()
