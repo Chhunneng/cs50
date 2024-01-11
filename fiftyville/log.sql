@@ -1,7 +1,7 @@
 -- Query 1: Examine the crime scene reports for the date and location of the theft
 SELECT *
 FROM crime_scene_reports
-WHERE day = 28 AND month = 7 AND year = 2023 AND street = 'Humphrey Street';
+WHERE street = 'Humphrey Street' AND year = 2023 AND month = 7 AND day = 28;
 
 -- Query 2: Once you find the crime scene report, investigate further details
 SELECT description
