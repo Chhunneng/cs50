@@ -29,3 +29,13 @@ JOIN flights ON airports.id = flights.destination_airport_id
 WHERE flights.origin_airport_id = (SELECT id FROM airports WHERE city = 'Fiftyville')
 AND flights.year = 2023 AND flights.month = 7 AND flights.day = 29
 ORDER BY flights.hour, flights.minute;
+--It seems the earliest flight on July 29 is to LaGuardia Airport in New York City (Flight ID 36). This aligns with Raymond's information about the thief planning to take the earliest flight out of Fiftyville.
+-- Step 6: Identify passengers on the flight to New York City.
+-- Checking the list of passengers on the identified flight. Putting them all in 'Suspect List'.
+-- Order the names according to their passport numbers.
+SELECT passengers.flight_id, name, passengers.passport_number, passengers.seat
+FROM people
+JOIN passengers ON people.passport_number = passengers.passport_number
+JOIN flights ON passengers.flight_id = flights.id
+WHERE flights.id = 36
+ORDER BY passengers.passport_number;
