@@ -103,3 +103,4 @@ WHERE year = 2023
     AND hour >= 10
     AND minute >= 15
     AND minute <= 25;
+--It seems we have additional information about Bruce's exit from the bakery. Now, let's proceed to gather information about the person who assisted Bruce in purchasing the flight ticket. We'll look into the phone call records for calls made around the time of the crime.
