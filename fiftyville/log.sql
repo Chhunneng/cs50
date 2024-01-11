@@ -89,5 +89,17 @@ WITH SuspectList AS (
 SELECT name
 FROM SuspectList
 WHERE name IN ('Vanessa', 'Bruce', 'Barry', 'Luca', 'Sofia', 'Iman', 'Diana', 'Kelsey');
-
-
+--Bruce, Diana, Iman, and Luca are both in the list of individuals who left the bakery within 10 minutes and in our suspect list based on various clues.
+--Now, let's proceed to the next step. We know that Bruce left the bakery within 10 minutes of the theft. However, to be sure that he is the thief, let's check if there are any additional clues or evidence related to Bruce.
+-- Step 10: Investigate further with additional clues related to Bruce.
+-- Checking additional clues or evidence related to Bruce.
+SELECT id, year, month, day, hour, minute, activity, license_plate
+FROM bakery_security_logs
+WHERE year = 2023
+    AND month = 7
+    AND day = 28
+    AND activity = 'exit'
+    AND name = 'Bruce'
+    AND hour >= 10
+    AND minute >= 15
+    AND minute <= 25;
