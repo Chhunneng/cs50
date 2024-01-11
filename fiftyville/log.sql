@@ -70,7 +70,6 @@ ORDER BY bakery_security_logs.minute;
 -- Step 9: Cross-reference with the suspect list.
 -- Checking if any of the individuals who left the bakery are already in our suspect list.
 WITH SuspectList AS (
-    -- The previous list of suspects from various clues
     SELECT 'Bruce' AS name
     UNION
     SELECT 'Diana'
