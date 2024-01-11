@@ -1,25 +1,14 @@
-Reflection on Audio Aura Calculation
+## 1. Characterizing Audio Aura:
 
-1. Characterizing the Audio Aura:
-   To characterize the audio aura based on the top 100 songs from 2018 in songs.db, we calculated the average energy, valence, and danceability of those songs. This was done to provide insights into the listener's mood as dictated by their favorite songs of that year.
+If songs.db contains the top 100 songs of one listener from 2018, their audio aura could be characterized by examining the average energy, valence, and danceability of these songs. This is calculated by averaging the respective values for each of these audio features across all the top 100 songs. Essentially, it provides an overview of the overall mood and energetic quality of the listener's music taste.
 
-   SQL Query:
-```
-SELECT AVG(energy) AS avg_energy, AVG(valence) AS avg_valence, AVG(danceability) AS avg_danceability
-FROM songs
-WHERE song_id IN (SELECT song_id FROM top_100_songs_2018 WHERE listener_id = 'listener_id_here');
-```
+## 2. Hypothesis and Better Ways:
 
-2. Limitations and Potential Bias:
-- Relying solely on the top 100 songs may not fully represent the listener's music taste, as it might exclude songs outside this list.
-- The selected year (2018) may not be reflective of the listener's current preferences, and music tastes can evolve over time.
-- The dataset may lack diversity in genres, potentially leading to a biased representation of the audio aura.
-- The chosen features (energy, valence, danceability) are limited; there might be other relevant features not considered.
+### Limitations:
+- **Oversimplification:** Averaging these audio features might oversimplify the listener's music preferences, potentially missing the nuances within each song that contribute to their mood.
+- **Lack of Context:** Analyzing audio features alone may not capture the emotional or contextual aspects of why a particular song resonated with the listener.
 
-3. Proposed Improvements:
-- Expand the dataset to include more than the top 100 songs, providing a more comprehensive view of the listener's music preferences.
-- Include songs from multiple years to capture changes in musical taste over time.
-- Incorporate additional features beyond energy, valence, and danceability, such as tempo, acousticness, or instrumentalness.
-- Implement a weighting system considering the recency of a song or the number of times a song has been played.
-
-Overall, while the current approach provides insights into the listener's mood based on their top songs, there are limitations that could be addressed to make the audio aura calculation more representative and nuanced.
+### Better Ways:
+- **Genre-based Analysis:** Considering the audio aura within specific genres that the listener frequently engages with could provide a more detailed understanding of their preferences.
+- **Lyrics Sentiment Analysis:** Integrating sentiment analysis of song lyrics could capture the emotional content, enhancing the characterization of the listener's mood.
+- **Temporal Analysis:** Understanding how the audio aura varies across different times of the year might reveal seasonal or situational influences on the listener's music preferences.
