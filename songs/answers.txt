@@ -1,14 +1,12 @@
-## 1. Characterizing Audio Aura:
+1. Characterizing Audio Aura:
 
 If songs.db contains the top 100 songs of one listener from 2018, their audio aura could be characterized by examining the average energy, valence, and danceability of these songs. This is calculated by averaging the respective values for each of these audio features across all the top 100 songs. Essentially, it provides an overview of the overall mood and energetic quality of the listener's music taste.
 
-## 2. Hypothesis and Better Ways:
-
-### Limitations:
-- **Oversimplification:** Averaging these audio features might oversimplify the listener's music preferences, potentially missing the nuances within each song that contribute to their mood.
-- **Lack of Context:** Analyzing audio features alone may not capture the emotional or contextual aspects of why a particular song resonated with the listener.
-
-### Better Ways:
-- **Genre-based Analysis:** Considering the audio aura within specific genres that the listener frequently engages with could provide a more detailed understanding of their preferences.
-- **Lyrics Sentiment Analysis:** Integrating sentiment analysis of song lyrics could capture the emotional content, enhancing the characterization of the listener's mood.
-- **Temporal Analysis:** Understanding how the audio aura varies across different times of the year might reveal seasonal or situational influences on the listener's music preferences.
+2. Hypothesis and Better Ways:
+Limitations:
+- Oversimplification: Averaging these audio features might oversimplify the listener's music preferences, potentially missing the nuances within each song that contribute to their mood.
+- Lack of Context: Analyzing audio features alone may not capture the emotional or contextual aspects of why a particular song resonated with the listener.
+Better Ways:
+- Genre-based Analysis: Considering the audio aura within specific genres that the listener frequently engages with could provide a more detailed understanding of their preferences.
+- Lyrics Sentiment Analysis: Integrating sentiment analysis of song lyrics could capture the emotional content, enhancing the characterization of the listener's mood.
+- Temporal Analysis: Understanding how the audio aura varies across different times of the year might reveal seasonal or situational influences on the listener's music preferences.
