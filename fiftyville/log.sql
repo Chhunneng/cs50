@@ -51,4 +51,20 @@ WHERE phone_calls.year = 2023
   AND phone_calls.day = 28
   AND phone_calls.duration <= 60
 ORDER BY phone_calls.duration;
+--Based on the durations of the calls, we can see that the person who talked for less than a minute and is likely to have bought the flight tickets for the thief is Kelsey. Let's continue to the next step.
+-- Step 8: Confirm the identity of the thief.
+-- Checking the license plates of cars within the specified time frame.
+-- Then, checking out the names of those cars' owners. They could be suspects.
+SELECT name, bakery_security_logs.hour, bakery_security_logs.minute
+FROM people
+JOIN bakery_security_logs ON people.license_plate = bakery_security_logs.license_plate
+WHERE bakery_security_logs.year = 2023
+  AND bakery_security_logs.month = 7
+  AND bakery_security_logs.day = 28
+  AND bakery_security_logs.activity = 'exit'
+  AND bakery_security_logs.hour = 10
+  AND bakery_security_logs.minute >= 15
+  AND bakery_security_logs.minute <= 25
+ORDER BY bakery_security_logs.minute;
+
 
