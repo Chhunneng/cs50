@@ -7,3 +7,9 @@ WHERE street = 'Humphrey Street' AND year = 2023 AND month = 7 AND day = 28;
 SELECT name, transcript
 FROM interviews
 WHERE year = 2023 AND month = 7 AND day = 28;
+
+-- Next, we'll focus on Eugene's statement, as he mentioned seeing the thief at the ATM on Leggett Street. We want to identify the account number of the person who made a withdrawal at that ATM around the time of the theft.
+-- Step 3: Find the account number and withdrawal amount from the ATM transactions on Leggett Street.
+SELECT account_number, amount
+FROM atm_transactions
+WHERE year = 2023 AND month = 7 AND day = 28 AND atm_location = 'Leggett Street' AND transaction_type = 'withdraw';
