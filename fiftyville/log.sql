@@ -53,6 +53,11 @@ WHERE bakery_security_logs.year = 2023 AND bakery_security_logs.month = 7 AND ba
   AND bakery_security_logs.minute >= 15 AND bakery_security_logs.minute <= 25
 ORDER BY bakery_security_logs.minute;
 
+-- Checking Bruce's Phone number
+SELECT phone_number
+FROM people
+WHERE name = 'Bruce';
+
 -- Checking phone call records for the accomplice
 SELECT id, year, month, day, duration, caller, receiver
 FROM phone_calls
