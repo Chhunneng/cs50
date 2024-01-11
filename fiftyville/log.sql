@@ -13,3 +13,4 @@ WHERE year = 2023 AND month = 7 AND day = 28;
 SELECT account_number, amount
 FROM atm_transactions
 WHERE year = 2023 AND month = 7 AND day = 28 AND atm_location = 'Leggett Street' AND transaction_type = 'withdraw';
+--Now, let's proceed to find the names of the individuals linked to these account numbers. We'll include this information in our suspect list.
