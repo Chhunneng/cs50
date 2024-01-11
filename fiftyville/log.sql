@@ -66,5 +66,29 @@ WHERE bakery_security_logs.year = 2023
   AND bakery_security_logs.minute >= 15
   AND bakery_security_logs.minute <= 25
 ORDER BY bakery_security_logs.minute;
+--Now that we have a list of people who left the bakery within 10 minutes from the theft, we can cross-reference this information with our existing suspect list. Let's see if any of these individuals are already in our suspect list.
+-- Step 9: Cross-reference with the suspect list.
+-- Checking if any of the individuals who left the bakery are already in our suspect list.
+WITH SuspectList AS (
+    -- The previous list of suspects from various clues
+    SELECT 'Bruce' AS name
+    UNION
+    SELECT 'Diana'
+    UNION
+    SELECT 'Brooke'
+    UNION
+    SELECT 'Kenny'
+    UNION
+    SELECT 'Iman'
+    UNION
+    SELECT 'Luca'
+    UNION
+    SELECT 'Taylor'
+    UNION
+    SELECT 'Benista'
+)
+SELECT name
+FROM SuspectList
+WHERE name IN ('Vanessa', 'Bruce', 'Barry', 'Luca', 'Sofia', 'Iman', 'Diana', 'Kelsey');
 
 
