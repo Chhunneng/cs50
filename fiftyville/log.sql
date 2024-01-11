@@ -39,3 +39,15 @@ JOIN passengers ON people.passport_number = passengers.passport_number
 JOIN flights ON passengers.flight_id = flights.id
 WHERE flights.id = 36
 ORDER BY passengers.passport_number;
+--Now, let's move on to the next step. Raymond mentioned that the thief called someone and talked for less than a minute, asking them to buy a flight ticket for the earliest flight on July 29, 2021. We need to check the phone call records to identify the person who bought the tickets.
+-- Step 7: Identify the person who bought the flight tickets.
+-- Checking the possible names of the caller, and putting these names in the 'Suspect List'.
+-- Order them according to the durations of the calls.
+SELECT name, phone_calls.duration
+FROM people
+JOIN phone_calls ON people.phone_number = phone_calls.caller
+WHERE phone_calls.year = 2021
+  AND phone_calls.month = 7
+  AND phone_calls.day = 28
+  AND phone_calls.duration <= 60
+ORDER BY phone_calls.duration;
