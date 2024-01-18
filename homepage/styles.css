@@ -12,3 +12,22 @@ body {
     background-color: #007bff;
     border-color: #007bff;
 }
+
+ul.social-links {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.social-links li {
+    margin-bottom: 8px;
+}
+
+ul.social-links li a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+ul.social-links li a:hover {
+    text-decoration: underline;
+}
