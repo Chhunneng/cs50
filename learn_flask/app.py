@@ -4,5 +4,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    name = request.args["name"]
+    if "name" in request.args:
+        name = request.args["name"]
+    else:
+        name = "world"
     return render_template("index.html", name=name)
