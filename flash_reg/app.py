@@ -12,7 +12,7 @@ def index():
 def greet():
     if not request.form.get("name"):
         return render_template("fail.html")
-    for sport in request.form.get_all("sport"):
+    for sport in request.form.getlist("sport"):
         if sport not in SPORT:
             return render_template("fail.html")
     return render_template("success.html")
