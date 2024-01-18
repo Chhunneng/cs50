@@ -10,6 +10,6 @@ def index():
 
 @app.route("/register", methods=["POST"])
 def greet():
-    if not request.form.get("name") or request.form.get("sport") not in :
+    if not request.form.get("name") or request.form.get("sport") not in SPORT:
         return render_template("fail.html")
     return render_template("success.html")
