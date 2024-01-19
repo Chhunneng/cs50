@@ -34,17 +34,21 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    # user_portfolio = db.execute(
-    #     "SELECT id, symbol, name, SUM(shares)  FROM trades WHERE id = ? GROUP BY symbol HAVING SUM(shares) > 0 ORDER BY price DESC", session["user_id"])
+    stocks = db.execute("SELECT symbol, SUM(shares) as shares FROM transactions WHERE user_id = :user_id GROUP BY symbol HAVING shares > 0",
+                        user_id=session["user_id"])
 
-    # user_cash = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    # current_worth = 0
-    # for stock in user_portfolio:
-    #     stock_data = lookup(stock["symbol"])
-    #     stock["currentprice"] = stock_data["price"]
-    #     stock["totalprice"] = stock_data["price"] * stock["SUM(shares)"]
-    #     current_worth += stock["totalprice"]
-    return apology("TODO")
+    total_value = 0
+    for stock in stocks:
+        quote_data = lookup(stock["symbol"])
+        stock["price"] = quote_data["price"]
+        stock["total_value"] = stock["shares"] * stock["price"]
+        total_value += stock["total_value"]
+
+    cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])[0]["cash"]
+
+    grand_total = total_value + cash
+
+    return render_template("index.html", stocks=stocks, cash=cash, total_value=total_value, grand_total=grand_total)
 
 
 @app.route("/buy", methods=["GET", "POST"])
