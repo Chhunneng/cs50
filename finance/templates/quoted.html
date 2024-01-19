@@ -5,5 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    {{ quote_data }}
+    <h2>Stock Quote</h2>
+    <p>Symbol: {{ quote.symbol }}</p>
+    <p>Price: ${{ quote.price | usd }}</p>
 {% endblock %}
