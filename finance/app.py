@@ -123,7 +123,10 @@ def register():
             return apology("must provide confirmation", 403)
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("the passwords do not match.", 403)
-        
+        hash_password = generate_password_hash(request.form.get("password"))
+        db.execute("INSERT COUNT(*) AS count FROM users WHERE username = ?;", request.form.get("username"))[0]["count"]
+        print(hash_password)
+
     if request.method == "GET":
         return render_template("register.html")
 
