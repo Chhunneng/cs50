@@ -26,16 +26,16 @@ def after_request(response):
 def index():
     if request.method == "POST":
 
-        if not (request.form.get("name") or request.form.get("month") or request.form.get("day")):
+        if not (request.form.get("name") and request.form.get("month") and request.form.get("day")):
             return redirect("/")
         try:
             month = int(month)
             day = int(day)
         except ValueError:
             return redirect("/")
-        if month < 0 or month > 12:
+        if month < 0 or month > 12 or day < 0 or day > 31:
             return redirect("/")
-
+        db.execute("INSERT INTO birthdays (name, month, day) VALUES(?, ?, ?)", name, month, day)
         return redirect("/")
 
     else:
