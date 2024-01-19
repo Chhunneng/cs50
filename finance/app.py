@@ -74,15 +74,15 @@ def buy():
             return apology("not enough cash", 400)
 
         db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total, transacted_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
-                    session["user_id"],
-                    quote_data["symbol"],
-                    shares,
-                    quote_data["price"],
-                    total_cost)
+                   session["user_id"],
+                   quote_data["symbol"],
+                   shares,
+                   quote_data["price"],
+                   total_cost)
 
         db.execute("UPDATE users SET cash = cash - ? WHERE id = ?",
-                    total_cost,
-                    session["user_id"])
+                   total_cost,
+                   session["user_id"])
         flash("Buy successfully")
         return redirect("/")
 
