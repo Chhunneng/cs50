@@ -12,28 +12,18 @@
                 <th class="text-start">Symbol</th>
                 <th class="text-end">Shares</th>
                 <th class="text-end">Price</th>
-                <th class="text-end">Total Value</th>
+                <th class="text-end">Transacted</th>
             </tr>
         </thead>
         <tbody>
-            {% for stock in stocks %}
+            {% for transaction in transactions %}
                 <tr>
-                    <td class="text-start">{{ stock.symbol }}</td>
-                    <td class="text-end">{{ stock.shares }}</td>
-                    <td class="text-end">{{ stock.price | usd }}</td>
-                    <td class="text-end">{{ stock.total_value | usd }}</td>
+                    <td class="text-start">{{ transaction.symbol }}</td>
+                    <td class="text-end">{{ transaction.shares }}</td>
+                    <td class="text-end">{{ transaction.price | usd }}</td>
+                    <td class="text-end">{{ transaction.transacted_at }}</td>
                 </tr>
             {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <td class="border-0 fw-bold text-end" colspan="3">Cash</td>
-                <td class="border-0 text-end">{{ cash | usd }}</td>
-            </tr>
-            <tr>
-                <td class="border-0 fw-bold text-end" colspan="3">TOTAL</td>
-                <td class="border-0 w-bold text-end">{{ grand_total | usd }}</td>
-            </tr>
-        </tfoot>
     </table>
 {% endblock %}
