@@ -214,3 +214,26 @@ def sell():
         flash("Sold successfully")
 
         return redirect("/")
+
+
+@app.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    if request.method == "POST":
+        if not request.form.get("old_password"):
+            return apology("must provide old password")
+
+        if not request.form.get("new_password"):
+            return apology("must provide new password")
+
+        rows = db.execute("SELECT hash FROM users WHERE id = :user_id", user_id=session["user_id"])
+
+        if not check_password_hash(rows[0]["hash"], request.form.get("old_password")):
+            return apology("incorrect old password")
+
+        new_hash = generate_password_hash(request.form.get("new_password"))
+        db.execute("UPDATE users SET hash = :new_hash WHERE id = :user_id", new_hash=new_hash, user_id=session["user_id"])
+
+        return redirect("/")
+    else:
+        return render_template("change_password.html")
