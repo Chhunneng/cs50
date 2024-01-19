@@ -76,17 +76,17 @@ def buy():
             return apology("not enough cash", 400)
 
         # Insert the purchase into the database
-        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total, transacted_at) VALUES (:user_id, :symbol, :shares, :price, :total, CURRENT_TIMESTAMP)",
-                    user_id=session["user_id"],
-                    symbol=quote_data["symbol"],
-                    shares=shares,
-                    price=quote_data["price"],
-                    total=total_cost)
+        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total, transacted_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
+                    session["user_id"],
+                    quote_data["symbol"],
+                    shares,
+                    quote_data["price"],
+                    total_cost)
 
         # Update the user's cash balance
-        db.execute("UPDATE users SET cash = cash - :total_cost WHERE id = :user_id",
-                    total_cost=total_cost,
-                    user_id=session["user_id"])
+        db.execute("UPDATE users SET cash = cash - ? WHERE id = ?",
+                    total_cost,
+                    session["user_id"])
 
         # Redirect to home page
         return redirect("/")
