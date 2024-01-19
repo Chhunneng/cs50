@@ -125,7 +125,7 @@ def register():
             return apology("the passwords do not match.", 403)
         hash_password = generate_password_hash(request.form.get("password"))
         db.execute("INSERT INTO users (username, hash) VALUES (?, ?);", request.form.get("username"), hash_password)
-        return render_template("login.html")
+        return redirect("/login")
 
     if request.method == "GET":
         return render_template("register.html")
