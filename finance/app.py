@@ -216,7 +216,7 @@ def sell():
         return redirect("/")
 
 
-@app.route("/change-password", methods=["GET", "POST"])
+@app.route("/change_password", methods=["GET", "POST"])
 @login_required
 def change_password():
     if request.method == "POST":
