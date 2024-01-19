@@ -34,8 +34,8 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    stocks = db.execute("SELECT symbol, SUM(shares) as shares FROM transactions WHERE user_id = :user_id GROUP BY symbol HAVING shares > 0",
-                        user_id=session["user_id"])
+    stocks = db.execute("SELECT symbol, SUM(shares) as shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING shares > 0",
+                        session["user_id"])
 
     total_value = 0
     for stock in stocks:
@@ -44,7 +44,7 @@ def index():
         stock["total_value"] = stock["shares"] * stock["price"]
         total_value += stock["total_value"]
 
-    cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])[0]["cash"]
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
 
     grand_total = total_value + cash
 
