@@ -55,31 +55,24 @@ def index():
 @login_required
 def buy():
     if request.method == "POST":
-        # Ensure symbol was submitted
         if not request.form.get("symbol"):
             return apology("must provide symbol", 400)
 
-        # Ensure shares was submitted and is a positive integer
         shares = request.form.get("shares")
         if not shares or not shares.isdigit() or int(shares) <= 0:
             return apology("must provide a positive integer for shares", 400)
 
-        # Look up the stock quote
         quote_data = lookup(request.form.get("symbol"))
 
-        # Check if the symbol exists
         if not quote_data:
             return apology("symbol not found", 400)
 
-        # Calculate the total cost
         total_cost = float(shares) * quote_data["price"]
 
-        # Check if the user can afford the purchase
         cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])[0]["cash"]
         if cash < total_cost:
             return apology("not enough cash", 400)
 
-        # Insert the purchase into the database
         db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total, transacted_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
                     session["user_id"],
                     quote_data["symbol"],
@@ -87,12 +80,10 @@ def buy():
                     quote_data["price"],
                     total_cost)
 
-        # Update the user's cash balance
         db.execute("UPDATE users SET cash = cash - ? WHERE id = ?",
                     total_cost,
                     session["user_id"])
-
-        # Redirect to home page
+        flash("Buy successfully")
         return redirect("/")
 
     else:
@@ -115,28 +106,23 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        # Ensure username was submitted
         if not request.form.get("username"):
             return apology("must provide username", 403)
 
-        # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
-        # Query database for username
         rows = db.execute(
             "SELECT * FROM users WHERE username = ?", request.form.get("username")
         )
-        # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(
             rows[0]["hash"], request.form.get("password")
         ):
             return apology("invalid username and/or password", 403)
 
-        # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
-        # Redirect user to home page
+        flash("Log in successfully")
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
@@ -187,6 +173,7 @@ def register():
         hash_password = generate_password_hash(request.form.get("password"))
         id = db.execute("INSERT INTO users (username, hash) VALUES (?, ?);", request.form.get("username"), hash_password)
         session["user_id"] = id
+        flash("Register successfully")
         return redirect("/")
 
     if request.method == "GET":
@@ -205,31 +192,25 @@ def sell():
         symbol = request.form.get("symbol")
         shares = int(request.form.get("shares"))
 
-        # Ensure the symbol and shares are provided
         if not symbol or shares is None or shares <= 0:
             return apology("Invalid symbol or shares")
 
-        # Check if the user owns enough shares to sell
         user_shares = db.execute("SELECT COALESCE(SUM(shares), 0) as total_shares FROM transactions WHERE user_id = :user_id AND symbol = :symbol",
                                  user_id=session["user_id"], symbol=symbol)[0]["total_shares"]
 
         if user_shares < shares:
             return apology("Not enough shares to sell")
 
-        # Get the current price of the stock
         quote_data = lookup(symbol)
         price = quote_data["price"]
 
-        # Calculate total value of the sold shares
         total = price * shares
 
-        # Update user's cash balance
         db.execute("UPDATE users SET cash = cash + :total WHERE id = :user_id", total=total, user_id=session["user_id"])
 
-        # Record the sale transaction
         db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total) VALUES (:user_id, :symbol, :shares, :price, :total)",
                    user_id=session["user_id"], symbol=symbol, shares=-shares, price=price, total=-total)
 
-        flash("Sold successfully!")
+        flash("Sold successfully")
 
         return redirect("/")
