@@ -119,15 +119,15 @@ def register():
     """Register user"""
     if request.method == "POST":
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
         elif db.execute("SELECT COUNT(*) AS count FROM users WHERE username = ?;", request.form.get("username"))[0]["count"]:
-            return apology("the username already exists", 403)
+            return apology("the username already exists", 400)
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
         elif not request.form.get("confirmation"):
-            return apology("must provide confirmation", 403)
+            return apology("must provide confirmation", 400)
         elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("the passwords do not match.", 403)
+            return apology("the passwords do not match.", 400)
         hash_password = generate_password_hash(request.form.get("password"))
         db.execute("INSERT INTO users (username, hash) VALUES (?, ?);", request.form.get("username"), hash_password)
         return redirect("/login")
