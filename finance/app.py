@@ -125,12 +125,10 @@ def register():
             return apology("the passwords do not match.", 403)
         hash_password = generate_password_hash(request.form.get("password"))
         db.execute("INSERT INTO users (username, password) VALUES (?, ?);", request.form.get("username"), hash_password)
-        print(hash_password)
+        return render_template("login.html")
 
     if request.method == "GET":
         return render_template("register.html")
-
-    return apology("TODO")
 
 
 @app.route("/sell", methods=["GET", "POST"])
