@@ -69,7 +69,7 @@ def buy():
 
         total_cost = float(shares) * quote_data["price"]
 
-        cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])[0]["cash"]
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
         if cash < total_cost:
             return apology("not enough cash", 400)
 
@@ -185,8 +185,8 @@ def register():
 def sell():
     if request.method == "GET":
         # Get user's stocks that they can sell
-        stocks = db.execute("SELECT symbol FROM transactions WHERE user_id = :user_id GROUP BY symbol HAVING SUM(shares) > 0",
-                            user_id=session["user_id"])
+        stocks = db.execute("SELECT symbol FROM transactions WHERE user_id = ? GROUP BY symbol HAVING SUM(shares) > 0",
+                            session["user_id"])
         return render_template("sell.html", stocks=stocks)
     elif request.method == "POST":
         symbol = request.form.get("symbol")
@@ -195,8 +195,8 @@ def sell():
         if not symbol or shares is None or shares <= 0:
             return apology("Invalid symbol or shares")
 
-        user_shares = db.execute("SELECT COALESCE(SUM(shares), 0) as total_shares FROM transactions WHERE user_id = :user_id AND symbol = :symbol",
-                                 user_id=session["user_id"], symbol=symbol)[0]["total_shares"]
+        user_shares = db.execute("SELECT COALESCE(SUM(shares), 0) as total_shares FROM transactions WHERE user_id = ? AND symbol = ?",
+                                 session["user_id"], symbol)[0]["total_shares"]
 
         if user_shares < shares:
             return apology("Not enough shares to sell")
@@ -206,10 +206,10 @@ def sell():
 
         total = price * shares
 
-        db.execute("UPDATE users SET cash = cash + :total WHERE id = :user_id", total=total, user_id=session["user_id"])
+        db.execute("UPDATE users SET cash = cash + ? WHERE id = ?", total, session["user_id"])
 
-        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total) VALUES (:user_id, :symbol, :shares, :price, :total)",
-                   user_id=session["user_id"], symbol=symbol, shares=-shares, price=price, total=-total)
+        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total) VALUES (?, ?, ?, ?, ?)",
+                   session["user_id"], symbol, -shares, price, -total)
 
         flash("Sold successfully")
 
@@ -226,14 +226,14 @@ def change_password():
         if not request.form.get("new_password"):
             return apology("must provide new password")
 
-        rows = db.execute("SELECT hash FROM users WHERE id = :user_id", user_id=session["user_id"])
+        rows = db.execute("SELECT hash FROM users WHERE id = ?", session["user_id"])
 
         if not check_password_hash(rows[0]["hash"], request.form.get("old_password")):
             return apology("incorrect old password")
 
         new_hash = generate_password_hash(request.form.get("new_password"))
-        db.execute("UPDATE users SET hash = :new_hash WHERE id = :user_id", new_hash=new_hash, user_id=session["user_id"])
-
+        db.execute("UPDATE users SET hash = ? WHERE id = ?", new_hash, session["user_id"])
+        flash("Changed Password successfully")
         return redirect("/")
     else:
         return render_template("change_password.html")
