@@ -115,8 +115,8 @@ def register():
     if request.method == "POST":
         if not request.form.get("username"):
             return apology("must provide username", 403)
-
-        elif 
+        elif db.execute("SELECT COUNT(*) AS count FROM users WHERE username = ?;", request.form.get("username")):
+            return apology("the username already exists", 403)
         elif not request.form.get("password"):
             return apology("must provide password", 403)
     if request.method == "GET":
