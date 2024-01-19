@@ -196,5 +196,40 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    """Sell shares of stock"""
-    return apology("TODO")
+    if request.method == "GET":
+        # Get user's stocks that they can sell
+        stocks = db.execute("SELECT symbol FROM transactions WHERE user_id = :user_id GROUP BY symbol HAVING SUM(shares) > 0",
+                            user_id=session["user_id"])
+        return render_template("sell.html", stocks=stocks)
+    elif request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = int(request.form.get("shares"))
+
+        # Ensure the symbol and shares are provided
+        if not symbol or shares is None or shares <= 0:
+            return apology("Invalid symbol or shares")
+
+        # Check if the user owns enough shares to sell
+        user_shares = db.execute("SELECT COALESCE(SUM(shares), 0) as total_shares FROM transactions WHERE user_id = :user_id AND symbol = :symbol",
+                                 user_id=session["user_id"], symbol=symbol)[0]["total_shares"]
+
+        if user_shares < shares:
+            return apology("Not enough shares to sell")
+
+        # Get the current price of the stock
+        quote_data = lookup(symbol)
+        price = quote_data["price"]
+
+        # Calculate total value of the sold shares
+        total = price * shares
+
+        # Update user's cash balance
+        db.execute("UPDATE users SET cash = cash + :total WHERE id = :user_id", total=total, user_id=session["user_id"])
+
+        # Record the sale transaction
+        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total) VALUES (:user_id, :symbol, :shares, :price, :total)",
+                   user_id=session["user_id"], symbol=symbol, shares=-shares, price=price, total=-total)
+
+        flash("Sold successfully!")
+
+        return redirect("/")
