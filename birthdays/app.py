@@ -28,6 +28,9 @@ def index():
 
         if not (request.form.get("name") and request.form.get("month") and request.form.get("day")):
             return redirect("/")
+        name = request.form.get("name")
+        month = request.form.get("month")
+        day = request.form.get("day")
         try:
             month = int(month)
             day = int(day)
@@ -42,5 +45,3 @@ def index():
 
         data = db.execute("SELECT * FROM birthdays;")
         return render_template("index.html", data=data)
-
-
