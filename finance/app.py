@@ -50,8 +50,49 @@ def index():
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
-    """Buy shares of stock"""
-    return apology("TODO")
+    if request.method == "POST":
+        # Ensure symbol was submitted
+        if not request.form.get("symbol"):
+            return apology("must provide symbol", 400)
+
+        # Ensure shares was submitted and is a positive integer
+        shares = request.form.get("shares")
+        if not shares or not shares.isdigit() or int(shares) <= 0:
+            return apology("must provide a positive integer for shares", 400)
+
+        # Look up the stock quote
+        quote_data = lookup(request.form.get("symbol"))
+
+        # Check if the symbol exists
+        if not quote_data:
+            return apology("symbol not found", 400)
+
+        # Calculate the total cost
+        total_cost = float(shares) * quote_data["price"]
+
+        # Check if the user can afford the purchase
+        cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])[0]["cash"]
+        if cash < total_cost:
+            return apology("not enough cash", 400)
+
+        # Insert the purchase into the database
+        db.execute("INSERT INTO transactions (user_id, symbol, shares, price, total, transacted_at) VALUES (:user_id, :symbol, :shares, :price, :total, CURRENT_TIMESTAMP)",
+                    user_id=session["user_id"],
+                    symbol=quote_data["symbol"],
+                    shares=shares,
+                    price=quote_data["price"],
+                    total=total_cost)
+
+        # Update the user's cash balance
+        db.execute("UPDATE users SET cash = cash - :total_cost WHERE id = :user_id",
+                    total_cost=total_cost,
+                    user_id=session["user_id"])
+
+        # Redirect to home page
+        return redirect("/")
+
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
@@ -120,7 +161,7 @@ def quote():
         quote_data = lookup(request.form.get("symbol"))
         if not quote_data:
             return apology("invalid symbol", 400)
-        render_template("quoted.html", quote=quote_data)
+        return render_template("quoted.html", quote=quote_data)
     return render_template("quote.html")
 
 
