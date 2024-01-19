@@ -124,7 +124,7 @@ def register():
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("the passwords do not match.", 403)
         hash_password = generate_password_hash(request.form.get("password"))
-        db.execute("INSERT COUNT(*) AS count FROM users WHERE username = ?;", request.form.get("username"))[0]["count"]
+        db.execute("INSERT INTO users (username, password) VALUES (?, ?);", request.form.get("username"), hash_password)
         print(hash_password)
 
     if request.method == "GET":
