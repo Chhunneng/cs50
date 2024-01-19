@@ -93,7 +93,7 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    transactions = db.execute("SELECT * FROM transactions WHERE user_id = :user_id ORDER BY timestamp DESC", user_id=session["user_id"])
+    transactions = db.execute("SELECT * FROM transactions WHERE user_id = ? ORDER BY transacted_at DESC", session["user_id"])
     return render_template("history.html", transactions=transactions)
 
 
