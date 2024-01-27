@@ -58,7 +58,7 @@ Using the Copy Histories Chrome Extension is straightforward:
 
 To install the extension:
 
-1. Download the extension files from [GitHub](#insert-link-to-github-repo).
+1. Download the extension files from [GitHub](https://github.com/Chhunneng/cs50-final-project).
 2. Open your Chrome browser and navigate to `chrome://extensions/`.
 3. Enable "Developer mode" in the top right corner.
 4. Click "Load unpacked" and select the folder containing the extension files.
